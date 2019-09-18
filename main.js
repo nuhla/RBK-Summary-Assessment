@@ -59,6 +59,16 @@ function reduce(array, f, acc) {
 //wordLengths("hello its me") // [5,3,2]
 
 function wordLengths(str) {
+  if(typeof str !== "string")
+    return "Plz enter a valid value"
+  if( str === undefined)
+    return "you didnt pass a string "
+  if(str.length === 0 )
+    return " Empty String "
+  var strToArray =str.split(' ');
+  return map(strToArray , function (element , index ){
+    return element.length;
+  })
     // TODO: your code here 
 }
 
@@ -72,6 +82,14 @@ function wordLengths(str) {
 // countOccurrences("hello, world!", "l"); // 3
 
 function countOccurrences(string, character) {
+  var stringArray=string.split('');
+  var val = 0;
+  debugger
+   reduce(stringArray ,function(char, ind ){
+    console.log(char);
+    if(char.toUpperCase() === character.toUpperCase())
+      return val++;
+  },0)
     // your code is here
 }
 
@@ -84,13 +102,28 @@ function countOccurrences(string, character) {
 // wordsLongerThanThree("Hello Mad World") //["Hello", "World"]
 
 function wordsLongerThanThree(str) {
+  
+  if(typeof str !== "string")
+    return "Plz enter a valid value"
+  if( str === undefined)
+    return "you didnt pass a string "
+  if(str.length === 0 )
+    return " Empty String "
+
+  var strToArray = str.split(' ');
+
+  return filter(strToArray , function(element, index){
+    if(element.length> 3)
+      return element;
+  })
     // TODO: your code here 
 }
 
 //=============================================================================
 /*                                  Q4                                        */
 //=============================================================================
-//Using recursion, write a function called repeatString that takes two parameters: a string str, 
+//Using recursion, write a function called repeatString that takes two
+// parameters: a string str, 
 //which is the string to be repeated, and count, a number 
 //representing how many times the string str should be repeated.
 //repeatString('dog', 0); // => '' 
@@ -100,22 +133,43 @@ function wordsLongerThanThree(str) {
 
 function repeatString(str, count) { 
  // TODO: your code here 
-} 
+
+  if(typeof str !== "string" || typeof count !== "number")
+    return "Plz enter a valid value Or the counter is Valid"
+
+  if( str === undefined || count === undefined)
+    return "you didnt pass a string or there is no number "
+
+  if(str.length === 0 )
+    return " Empty String "
+
+  if(count ===0 )
+    return "";
+  return str + " " +repeatString(str ,--count)
+ }
+
  
 
 //=============================================================================
 /*                                  Q5                                       */
 //=============================================================================
 /*
- using closures create a function called makePizza that has the following properties and methods
+ using closures create a function called makePizza that has the following 
+ properties and methods
  crust a property represented by a string. ex "thin","thick". 
  size a property represented by a string. ex "M","L".
  numberOfSlice a property that hold the number of slice, ex: 8
- ** the values of all properties will be provided as arguments in the function invocation. 
- addIngredients a function that add a new ingredient to the ingredients property.
- displayIngredients a function that displays a comma separated string of all ingredients. ex: The ingredients are:tomato,mushroom,meat
- bakePizza a function that display a string with your pizza description after 2 seconds. ex "Your thin M 8 slice pizza is done" 
- eatSlice a function that let you eat from the pizza as long as the numberOfSlice is greater than zero and decrease the total number of slices by one.
+ ** the values of all properties will be provided as arguments in 
+ the function invocation. 
+ addIngredients a function that add a new ingredient to the ingredients 
+ property.
+ displayIngredients a function that displays a comma separated string of 
+ all ingredients. ex: The ingredients are:tomato,mushroom,meat
+ bakePizza a function that display a string with your pizza description
+  after 2 seconds. ex "Your thin M 8 slice pizza is done" 
+ eatSlice a function that let you eat from the pizza as long as 
+ the numberOfSlice is greater than zero and decrease the total number 
+ of slices by one.
  */
 //Example:
 // var pizza = makePizza("thin", "M", 2);
@@ -130,6 +184,58 @@ function repeatString(str, count) {
 
 // Write your code here .....
 
+function makePizza( crust , size , numberOfSlice ){
+
+  if(crust === undefined || size === undefined || numberOfSlice === undefined)
+    return "undefined Values of parameters ";
+
+  if(typeof crust !== "string" || typeof size !== "string" || typeof numberOfSlice !== "number")
+    return "ivalied values";
+
+  var crust=crust
+  var size=size;
+  var numberOfSlice=numberOfSlice;
+  var ingredients=[];
+
+  return {
+    addIngredients:function(Ingredient){
+      if(Ingredient === undefined || Ingredient ===""){
+        console.log( "you should enter a Valu")
+        return undefined;
+      }
+      if(typeof Ingredient !== number ){
+         console.log( "you should enter a Valid Value");
+          return undefined;
+        }
+
+      ingredients.push(Ingredient);
+      return ingredients;
+
+    } ,
+    displayIngredients:function(){
+      var str = "";
+
+      if(ingredients.length=== 0)
+        return "There is no ingredients"
+
+      for(var i = 0  ; i < ingredients.length ; i++){
+        str+= " "+ ingredients[i];
+      }
+      return str;
+    },
+    bakePizza:function (){
+      window.setTimeout(function(){
+        console.log( "Your "+size +crust+ numberOfSlice+" slice pizza is done ");
+      },2000)
+    },
+    eatSlice:function(){
+      if(numberOfSlice>0)
+        return numberOfSlice--;
+      else
+        return "your Pizza Is Finish "
+    }
+  }
+}
 //=============================================================================
 /*                                  Q6                                      */
 //=============================================================================
@@ -155,18 +261,50 @@ d- Decrement the number of "unread" books
 // Now, to make sure that you are actually reading, make a comment below this and type: Yes I am
 
 // Write your code here .....
+function ReadingList(){
+  return{
+    read:0,
+    unRead:1,
+    toRead:[],
+    currentRead:"",
+    readBooks:[],
+    AddBook:AddBook,
+    finishCurrentBook:finishCurrentBook
+  }
 
+}
+
+
+  function AddBook(book){
+    if(book !== undefined){
+    this.toRead.push(book);
+    this.unRead++;
+    }
+  }
+  
+  function finishCurrentBook(){
+
+    this.readBooks.push(this.currentRead);
+    this.currentRead="";
+    this.read++;
+    (this.readBooks).unshift(this.currentRead);
+    this.unRead--;
+  }
 //=============================================================================
 /*                                  Q7                                       */
 //=============================================================================
-//Using closures create makeSafe Function that accepts an initial integer value to specify the storage size limit
-//makeSafe should contain addItem function that accepts two parameters the item and the itemSize as Strings
+//Using closures create makeSafe Function that accepts an 
+//initial integer value to specify the storage size limit
+//makeSafe should contain addItem function that accepts two 
+//parameters the item and the itemSize as Strings
 //itemSize should be either "big", "medium" and "small"
 //big sized items will hold 3 slots in the storage
 //medium sized items will hold 2 slots in the storage
 //small sized items  will hold 1 slot in the storage
-//return "Can't fit" if you try to add an item that exceeds the storage size limit
-//when the safe is full return a string representing all the items that are in the safe
+//return "Can't fit" if you try to add an item that exceeds the
+// storage size limit
+//when the safe is full return a string representing all the items 
+//that are in the safe
 //Example:
 //  var safe = makeSafe(5)
 //  safe('watch','small')
@@ -174,7 +312,35 @@ d- Decrement the number of "unread" books
 //  safe('silver-bar','big') => "Can't fit"
 //  safe('money','small') => "watch gold-bar money"
 
-// Write your code here .....
+function makeSafe(sizeLimite){
+  var limit=sizeLimite;
+  var items=[];
+
+  return function addItem(item, itemSize){
+      debugger;
+      var slots=0;
+
+      if(itemSize == "big")
+        slots=3;
+
+      if(itemSize == "medium")
+        slots=2;
+
+      if(itemSize == "small")
+        slots=1;
+
+      
+      if((sizeLimite-slots) >= 0){
+        sizeLimite=sizeLimite-slots;
+        items.push(item);
+        return "Item is Added";
+      }else{
+
+        return "Can't fit ";
+    }
+    
+  }
+}
 
 //=============================================================================
 /*                                  Q8                                       */
@@ -200,12 +366,18 @@ d- Decrement the number of "unread" books
 //Create an empty unordered list
 //Create three input elements of type checkbox
 //Create two buttons "create" & "remove"
-//Create 7 classes in CSS each with the appropriete color (black, purple, green, orange, red, yellow, blue)
-//Using jQuery run a function that gets called using the button's id (#create)
-//The function takes see if the checkboxes are checked or not (true or false), use $("#id").prop('checked')
-//If all 3 checkboxes are checked add an list item with the word black in it and add the "black" class to it
-//If 2 of the checkboxes are checked add (purple = blue + red), (green = blue + yellow), (orange = red + orange)
-//If 1 of the checkboxes is checked add (yellow, blue or red) as li and the class to it
+//Create 7 classes in CSS each with the appropriete color 
+//(black, purple, green, orange, red, yellow, blue)
+//Using jQuery run a function that gets called using the
+// button's id (#create)
+//The function takes see if the checkboxes are checked 
+//or not (true or false), use $("#id").prop('checked')
+//If all 3 checkboxes are checked add an list item with 
+//the word black in it and add the "black" class to it
+//If 2 of the checkboxes are checked add (purple = blue + red), 
+//(green = blue + yellow), (orange = red + orange)
+//If 1 of the checkboxes is checked add (yellow, blue or red)
+// as li and the class to it
 
 //Using jQuery call a function from the button's id (#delete)
 //The function removes all the elements from the unordered list based on the checkboxes as the previous function
