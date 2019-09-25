@@ -82,14 +82,15 @@ function wordLengths(str) {
 // countOccurrences("hello, world!", "l"); // 3
 
 function countOccurrences(string, character) {
-  var stringArray=string.split('');
-  var val = 0;
-  debugger
-   reduce(stringArray ,function(char, ind ){
-    console.log(char);
-    if(char.toUpperCase() === character.toUpperCase())
-      return val++;
-  },0)
+   var newArr= string.split('');
+   var count=0;
+  each(newArr,function(element,i){
+   if(element.toUpperCase()===character.toUpperCase()){
+     ++count;
+   }
+  })
+  return count;
+
     // your code is here
 }
 
@@ -388,6 +389,7 @@ function makeSafe(sizeLimite){
 //================================================================================
 // Theoretical questions.
 // 1- In your own words,Why do we use Closures ?
+// we use closser to protect our data from being updated from other unwanted operation , so we incapsulate it 
 
 // 2- In OOP, what does "this" refer to ?
 
